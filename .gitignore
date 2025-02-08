@@ -1,2 +1,6 @@
 .venv/
 .idea/
+docs/
+tests/
+README.md
+requirements.txt
