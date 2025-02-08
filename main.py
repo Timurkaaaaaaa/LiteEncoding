@@ -1,6 +1,7 @@
 import sys
 from PyQt5 import QtWidgets
 from ui import Ui_LiteEncoding
+import base64
 
 class MainApp(QtWidgets.QMainWindow, Ui_LiteEncoding):
     def __init__(self):
@@ -33,10 +34,13 @@ class MainApp(QtWidgets.QMainWindow, Ui_LiteEncoding):
         self.OutputText.setText(binary_string)
 
     def encode_base64(self):
-        print("Нажата кнопка Encode BASE64")
+        input_text = self.InputText.toPlainText()
+        data_bytes = input_text.encode('utf-8')
+        encoded_data = base64.b64encode(data_bytes)
+        encoded_string = encoded_data.decode('utf-8')
+        self.OutputText.setText(encoded_string)
 
     def decode_ascii16(self):
-        # Получаем шестнадцатеричный текст из поля ввода
         hex_input = self.InputText.toPlainText()
         bytes_object = bytes.fromhex(hex_input)
         decoded_string = bytes_object.decode('windows-1251')
@@ -51,14 +55,18 @@ class MainApp(QtWidgets.QMainWindow, Ui_LiteEncoding):
 
     def decode_ascii2(self):
         binary_string = self.InputText.toPlainText()
-        bytes_list = [binary_string[i:i+8] for i in range(0, len(binary_string), 8)]
 
-        # Преобразуем каждый байт из двоичного представления в десятичное и затем в символ
-        decoded_string = ''.join(chr(int(byte, 2)) for byte in bytes_list)
+        bytes_list = [binary_string[i:i+8] for i in range(0, len(binary_string), 8)]
+        byte_array = bytearray(int(byte, 2) for byte in bytes_list)
+        decoded_string = byte_array.decode('windows-1251')
+
         self.OutputText.setText(decoded_string)
 
     def decode_base64(self):
-        print("Нажата кнопка Decode BASE64")
+        input_text = self.InputText.toPlainText()
+        decoded_data = base64.b64decode(input_text)
+        decoded_string = decoded_data.decode('utf-8')
+        self.OutputText.setText(decoded_string)
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
