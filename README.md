@@ -61,4 +61,9 @@ ________
 <h2>🛡️ License:</h2>
 
 This project is licensed under the MIT License
+  
+________
 
+<h2>🔗 Links</h2>
+
+- Application icon - <a href="https://www.flaticon.com/free-icons/encoding" title="encoding icons">Encoding icons created by Freepik - Flaticon</a>
