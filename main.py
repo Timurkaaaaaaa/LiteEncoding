@@ -48,10 +48,30 @@ class MainApp(QtWidgets.QMainWindow, Ui_LiteEncoding):
 
 
     def decode_ascii10(self):
-        input = self.InputText.toPlainText()
-        byte_values = [int(input[i:i + 3]) for i in range(0, len(input), 3)]
-        decoded_string = bytes(byte_values).decode('windows-1251')
-        self.OutputText.setText(decoded_string)
+        input_text = self.InputText.toPlainText()
+
+        try:
+            # Проверяем, что длина входных данных четная
+            if len(input_text) % 2 != 0:
+                raise ValueError("Входные данные должны содержать четное количество цифр.")
+
+            # Преобразуем каждые две цифры в байты
+            byte_values = [int(input_text[i:i + 2]) for i in range(0, len(input_text), 2)]
+
+            # Преобразуем список целых чисел в байты
+            decoded_bytes = bytes(byte_values)
+
+            # Декодируем байты в строку
+            decoded_string = decoded_bytes.decode('windows-1251')
+
+            # Устанавливаем результат в OutputText
+            self.OutputText.setText(decoded_string)
+
+        except ValueError as ve:
+            self.OutputText.setText(f"Ошибка: {str(ve)}")
+        except Exception as e:
+            self.OutputText.setText(f"Произошла ошибка: {str(e)}")
+
 
     def decode_ascii2(self):
         binary_string = self.InputText.toPlainText()
@@ -71,5 +91,6 @@ class MainApp(QtWidgets.QMainWindow, Ui_LiteEncoding):
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     window = MainApp()
+    window.setFixedSize(949, 599)
     window.show()
     sys.exit(app.exec_())
